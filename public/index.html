@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="import" href="logo.png">
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="./output.css">
+    <title>Meta Translate- Language Translator</title>
+</head>
+
+<body>
+    <nav class="w-screen  p-2 border-0">
+        <div class="flex justify-between mx-5 w-full sm:w-72 sm:mt-3 md:w-1/3 lg:w-1/4 items-center border-0">
+            <img class="w-10  md:w-14 lg:w-20 xl:w-10 2xl:w-14 " src="./logo.png" alt="logo">
+            <h1 class="text-lg font-serif mx-10 font-bold text-[green] sm:mr-10 sm:text-lg md:text-xl lg:text-lg xl:text-lg 2xl:text-2xl">Meta <span class="text-[blue]">Translate</span>
+            </h1>
+        </div>
+    </nav>
+    <div class="w-screen max-h-screen border-0 mt-5 ">
+        <div class="w-full  flex mx-auto justify-center my-2 items-center px-3 flex-row md:flex-row sm:flex-row sm:w-2/3">
+            <div class="mx-2 lg:mx-10">
+                <h1 class="text-green-800  my-3 text-sm lg:text-lg xl:text-xl 2xl:text-xl">Select Language from:</h1>
+                <select class="border-2 border-gray-800 w-fit cursor-pointer p-1 text-sm lg:w-52 lg:text-lg xl:text-xl 2xl:text-xl" name="source_lang" id="l1"></select>
+            </div>
+            <div>
+                <h1 class="text-blue-600 text-sm my-3  lg:text-lg xl:text-xl 2xl:text-xl">Select Language To:</h1>
+                <select class="border-2 border-gray-800 w-fit cursor-pointer p-1 text-sm lg:w-52 lg:text-lg xl:text-xl 2xl:text-xl" name="target_lang" id="target_lang"></select>
+            </div>
+        </div>
+        <div class=" relative w-full mb-0 p-1 flex justify-center flex-col mx-auto items-center sm:p-5 xl:flex-row ">
+            <textarea
+                class="outline-none xl:h-[20rem] 2xl:h-[22rem] border-2 sm:my-3 sm:p-2 sm:text-lg lg:text-xl xl:text-2xl 2xl:text-2xl text-lg m-0 p-1 text-justify resize-none  w-full xl:mx-2 border-gray-400"
+                name="text" id="text" cols="80" rows="10" placeholder="Enter Text"></textarea>
+            <textarea class="outline-none resize-none sm:text-lg lg:text-xl xl:text-2xl w-full border-2 h-80 xl:h-[20rem] 2xl:h-[22rem] border-blue-200 m-0  text-justify overflow-scroll p-2" id="text2"></textarea>
+            <span class="absolute top-1/2 right-3  bg-gray-400 text-black p-1 rounded-lg xl:top-3 xl:text-lg 2xl:text-xl cursor-pointer" id="copy">copy</span>
+        </div>
+        <button class="fixed sm:p-1  xl:p-2 sm:text-lg lg:text-xl xl:text-2xl  2xl:text-2xl lg:relative lg:m-5 lg:mx-10  bottom-5 right-5 bg-green-700 text-white p-1 rounded-lg hover:bg-green-800 border-2 ml-14 mb-5 active:border-slate-600"
+            onclick="submitForm()" id="btn">Translate</button>
+    </div>
+</body>
+<script>
+    let copyelement = document.getElementById('copy');
+    copyelement.addEventListener('click',copydata);
+    async function copydata()
+    {
+        copyelement.innerText = 'Copied!';
+        setTimeout(() => {
+            copyelement.innerText ='Copy';
+        }, 1000);
+        let text = document.getElementById('text2').value;
+        await navigator.clipboard.writeText(text);
+    }
+    let list1 = document.getElementById('l1');
+    function submitForm() {
+        let text = document.getElementById('text').value;
+        let lang = document.getElementById('target_lang').value;
+        let text2 = document.getElementById('text2');
+        let btn = document.getElementById('btn');
+        let source_lang = list1.value;
+        btn.innerText ='Processing';
+        const option = {
+            method: 'POST',
+            body: new URLSearchParams({ text: text, target_lang: lang,source_lang:source_lang })
+        };
+        fetch('/', option)
+            .then(responce => responce.json())
+            .then(result => {
+                console.log(result);
+                if(result.status=='success')
+                {
+                    text2.innerText = result.text;
+                }
+                else
+                {
+                    text2.innerText ='Please check selected languages';
+                }
+                btn.innerText ='Translate';
+
+            })
+            .catch(err => { throw err })
+    }
+    const langarr = [
+        "Albanian",
+        "Amharic",
+        "Arabic",
+        "Azerbaijani",
+        "Basque",
+        "Bengali",
+        "Bulgarian",
+        "Cebuano",
+        "Chinese",
+        "Croatian",
+        "Czech",
+        "Danish",
+        "Dutch",
+        "English",
+        "Estonian",
+        "Finnish",
+        "French",
+        "Georgian",
+        "German",
+        "Greek",
+        "Gujarati",
+        "Hausa",
+        "Hebrew",
+        "Hindi",
+        "Hmong",
+        "Hungarian",
+        "Icelandic",
+        "Igbo",
+        "Indonesian",
+        "Irish",
+        "Italian",
+        "Japanese",
+        "Javanese",
+        "Kannada",
+        "Kazakh",
+        "Khmer",
+        "Kinyarwanda",
+        "Korean",
+        "Kurdish",
+        "Kyrgyz",
+        "Lao",
+        "Latvian",
+        "Lithuanian",
+        "Malagasy",
+        "Malay",
+        "Malayalam",
+        "Malay",
+        "Maltese",
+        "Marathi",
+        "Mongolian",
+        "Nepali",
+        "Norwegian",
+        "Pashto",
+        "Persian",
+        "Polish",
+        "Portuguese",
+        "Punjabi",
+        "Romanian",
+        "Russian",
+        "Serbian",
+        "Shona",
+        "Sindhi",
+        "Sinhala",
+        "Slovak",
+        "Slovenian",
+        "Somali",
+        "Spanish",
+        "Sundanese",
+        "Swahili",
+        "Swedish",
+        "Tagalog",
+        "Tajik",
+        "Tamil",
+        "Telugu",
+        "Thai",
+        "Tibetan",
+        "Turkish",
+        "Turkmen",
+        "Ukrainian",
+        "Urdu",
+        "Uzbek",
+        "Vietnamese",
+        "Welsh",
+        "Wolof",
+        "Xhosa",
+        "Yoruba",
+        "Zulu"
+    ]
+
+    const arr = [
+        "sq",
+        "am",
+        "ar",
+        "az",
+        "eu",
+        "bn",
+        "bg",
+        "ceb",
+        "zh",
+        "hr",
+        "cs",
+        "da",
+        "nl",
+        "en",
+        "et",
+        "fi",
+        "fr",
+        "ka",
+        "de",
+        "el",
+        "gu",
+        "ha",
+        "he",
+        "hi",
+        "hmn",
+        "hu",
+        "is",
+        "ig",
+        "id",
+        "ga",
+        "it",
+        "ja",
+        "jv",
+        "kn",
+        "kk",
+        "km",
+        "rw",
+        "ko",
+        "ku",
+        "ky",
+        "lo",
+        "lv",
+        "lt",
+        "mg",
+        "ms",
+        "ml",
+        "ms",
+        "mt",
+        "mr",
+        "mn",
+        "ne",
+        "no",
+        "ps",
+        "fa",
+        "pl",
+        "pt",
+        "pa",
+        "ro",
+        "ru",
+        "sr",
+        "sn",
+        "sd",
+        "si",
+        "sk",
+        "sl",
+        "so",
+        "es",
+        "su",
+        "sw",
+        "sv",
+        "tl",
+        "tg",
+        "ta",
+        "te",
+        "th",
+        "bo",
+        "tr",
+        "tk",
+        "uk",
+        "ur",
+        "uz",
+        "vi",
+        "cy",
+        "wo",
+        "xh",
+        "yo",
+        "zu"
+    ]
+
+
+    let languagehtml = document.getElementById('target_lang');
+    let html = '';
+    for (let i = 0; i < 87; i++) {
+        if(arr[i]=='hi')
+        {
+            html+= `<option selected value=${arr[i]}>${langarr[i]}</option>`;
+            continue;
+        }
+        html += `<option value=${arr[i]}>${langarr[i]}</option>`;
+    }
+    languagehtml.innerHTML = html;
+    html='';
+    for (let i = 0; i < 87; i++) 
+    {
+        html += `<option value=${arr[i]}>${langarr[i]}</option>`;
+    }
+    html = '<option selected value="">Automatic Detect</option>'+html;
+    list1.innerHTML = html;
+</script>
+
+</html>
